@@ -10,8 +10,7 @@ import {
 
 import { colors } from "../styles/colors";
 
-export default function LoginScreen({navigation}:any) {
-
+export default function LoginScreen({ navigation }: any) {
   return (
     <ImageBackground
       style={styles.container}
@@ -25,7 +24,10 @@ export default function LoginScreen({navigation}:any) {
       </View>
       <View style={styles.buttonWrapper}>
         <Button color="tomato" title="Login with Apple" />
-        <Button title="Login with Google" onPress={() => navigation.navigate('Dashboard')} />
+        <Button
+          title="Login with Google"
+          onPress={() => navigation.navigate("Dashboard")}
+        />
       </View>
     </ImageBackground>
   );
