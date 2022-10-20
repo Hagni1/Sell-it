@@ -1,3 +1,4 @@
+import { onValue } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import {
   Button,
@@ -9,28 +10,29 @@ import {
   Text,
   View,
 } from "react-native";
-import { useDispatch } from "react-redux";
-import { getProducts } from "../../store/productReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { getData, productRef } from "../../store/productReducer";
 import store from "../../store/store";
 import { ProductTypes } from "../../types";
 import Product from "./components/Product";
 
 export default function Dashboard() {
-  const [products, setProducts] = useState<any>([]);
   const dispatch = useDispatch<any>();
-  store.subscribe(() => setProducts(store.getState().products.value));
-
+  // const products: any = store.getState().products;
   useEffect(() => {
-    dispatch(getProducts());
-  }, []);
 
+    onValue(productRef, (snapshot) => dispatch(getData(snapshot.val())));
+  }, [])
+  
+  const products: any = useSelector<any>(storeState => storeState.products)
+  const productsValues:any = Object.entries(products)
   return (
-    <SafeAreaView  style={styles.container}>
-       <FlatList
-          data={products}
-          renderItem={(item) => <Product product={item} />}
-          keyExtractor={(product: any) => product.id}
-        />
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={productsValues}
+        renderItem={(item) => <Product product={item} />}
+        keyExtractor={(product: any) => product[0]}
+      />
     </SafeAreaView>
   );
 }

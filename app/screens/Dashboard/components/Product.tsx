@@ -3,8 +3,7 @@ import { Button, Image, StyleSheet, Text, View } from "react-native";
 import moment from 'moment'
 
 export default function Product({ product }: any) {
-    const currentProduct = product.item;
-    const {city, updatedAt,description, image, localization, price, title} = JSON.parse(JSON.stringify(currentProduct))
+    const {city, updatedAt,description, image, localization, price, title} = product.item[1]
 
   return (
     <View style={styles.container}>

@@ -13,9 +13,11 @@ import * as ImagePicker from "expo-image-picker"; // not react-image-picker
 import { TextInput, Button } from "react-native-paper";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
-import { addProduct, AppDispatch } from "../store/productReducer";
+import { AppDispatch } from "../store/productReducer";
 import { useDispatch } from "react-redux";
 import { ProductTypes } from "../types";
+import { db } from "../firebase/init";
+import { push, ref, set } from "firebase/database";
 
 interface pickImageTypes {
   setFieldValue: any;
@@ -41,13 +43,13 @@ export default function AddNewProduct() {
       formRef.current.setFieldValue("localization", location.coords);
     })();
   }, []);
-  
+
   const pickImage = async ({ setFieldValue, values }: pickImageTypes) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       quality: 1,
-      base64:true,
+      base64: true,
     });
     const { cancelled }: any = result;
     if (!cancelled) {
@@ -55,9 +57,14 @@ export default function AddNewProduct() {
     }
   };
 
-  const handleSubmit = async(values:ProductTypes) => {
-    dispatch(addProduct(values))
+  function storeNewProduct(value:any) {
+    const reference = ref(db, 'products');
+    push(reference, value);
   }
+  const handleSubmit = async (values: ProductTypes) => {
+    // dispatch(addProduct(values));
+    storeNewProduct(values)
+  };
 
   return (
     <SafeAreaView style={styles.container}>

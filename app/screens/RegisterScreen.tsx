@@ -10,10 +10,7 @@ import {
 import {
   getAuth,
   GoogleAuthProvider,
-  signInWithCredential,
   signInWithEmailAndPassword,
-  signInWithPopup,
-  signInWithRedirect,
 } from "firebase/auth";
 import { colors } from "../styles/colors";
 import { Formik } from "formik";
